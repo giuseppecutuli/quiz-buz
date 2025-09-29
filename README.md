@@ -141,4 +141,4 @@ Released under the **MIT License** – see the [LICENSE](LICENSE) file for detai
 
 ## 📬 Contact
 
-👤 Author: Giuseppe Cutuli [Website](https://www.cutuli.dev)
+👤 Author: Giuseppe Cutuli [Website](https://cutuli.dev)
