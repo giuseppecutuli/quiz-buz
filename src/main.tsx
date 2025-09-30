@@ -1,4 +1,4 @@
-import { createRouter,RouterProvider } from '@tanstack/react-router'
+import { RouterProvider } from '@tanstack/react-router'
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
 
@@ -6,15 +6,9 @@ import { Provider as UiProvider } from '@/components/ui/provider'
 
 import { AuthProvider, useAuth } from './contexts/Auth'
 // Import the generated route tree
-import { routeTree } from './routeTree.gen'
+import { waitForAuth } from './lib/auth'
+import { router } from './lib/router'
 
-// Create a new router instance
-const router = createRouter({
-  routeTree,
-  context: {
-    auth: undefined!,
-  }
-})
 
 // Register the router instance for type safety
 declare module '@tanstack/react-router' {
@@ -28,6 +22,7 @@ const Router = () => {
 
   const context = {
     auth,
+    waitForAuth,
   }
 
   return <RouterProvider router={router} context={context} />

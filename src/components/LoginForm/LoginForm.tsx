@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react'
+import { Flex, Text } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FormProvider, useForm } from 'react-hook-form'
 
@@ -8,7 +8,7 @@ import { FormField } from '../FormField'
 import { Button } from '../ui/button'
 import { LoginFormProps, LoginSchema } from './types'
 
-export const LoginForm = ({ onSubmit }: LoginFormProps) => {
+export const LoginForm = ({ onSubmit, error, loading }: LoginFormProps) => {
   const methods = useForm({
     defaultValues: {
       email: '',
@@ -47,9 +47,11 @@ export const LoginForm = ({ onSubmit }: LoginFormProps) => {
           />
         </Flex>
 
-        <Button type="submit" size="xl" colorPalette="blue">
+        <Button type="submit" size="xl" colorPalette="blue" loading={loading} disabled={loading} width="full">
           {texts.form.login.submit}
         </Button>
+
+        {error && <Text color="red.500" mt="3" textAlign="center">{error}</Text>}
       </form>
     </FormProvider>
   )

@@ -1,10 +1,12 @@
 import { z } from 'zod/v4'
 
 export type LoginFormProps = {
-  onSubmit: (data: FormInput) => void;
+  onSubmit: (data: LoginFormInput) => void;
+  loading?: boolean;
+  error?: string | null;
 }
 
-export type FormInput = {
+export type LoginFormInput = {
   email: string;
   password: string;
   remember: boolean;

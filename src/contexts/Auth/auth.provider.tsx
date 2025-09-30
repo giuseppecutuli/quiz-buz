@@ -1,16 +1,16 @@
 import { PropsWithChildren } from 'react'
 
-import { AuthContext } from './auth.context'
+import { AuthContext, AuthContextType } from './auth.context'
+import { useAuthLifecycle, useAuthStore } from '@/hooks'
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
-  const login = () => {}
-  const logout = () => {}
-  const isAuthenticated = false
+  useAuthLifecycle()
 
-  const value = {
-    isAuthenticated,
-    login,
-    logout,
+  const { session } = useAuthStore()
+
+  const value: AuthContextType = {
+    session,
+    user: session?.user ?? null,
   }
 
   return (
