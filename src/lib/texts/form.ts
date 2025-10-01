@@ -1,11 +1,15 @@
 export const form = {
-  login: {
-    title: 'Login to your Account',
-    submit: 'Login',
-  },
+  login: 'Login',
+  register: 'Register',
   email: 'Email',
   password: 'Password',
   enterEmail: 'Enter your email',
   enterPassword: 'Enter your password',
+  confirmPassword: 'Confirm your password',
   rememberMe: 'Remember me',
+  passwordNotMatch: 'Passwords don\'t match',
+  firstName: 'First Name',
+  lastName: 'Last Name',
+  enterFirstName: 'Enter your first name',
+  enterLastName: 'Enter your last name',
 }

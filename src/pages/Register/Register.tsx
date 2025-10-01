@@ -3,6 +3,7 @@
 import { AuthLayout } from '@/components/AuthLayout';
 import { Link } from '@/components/Link';
 import { LoginForm, LoginFormInput } from '@/components/LoginForm'
+import { RegisterForm, RegisterFormInput } from '@/components/RegisterForm';
 import { supabase } from '@/lib/supabase.client';
 import { texts } from '@/lib/texts';
 import {
@@ -12,18 +13,26 @@ import {
 import { useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 
-export const LoginPage: React.FC = () => {
+export const RegisterPage: React.FC = () => {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleLogin = async (data: LoginFormInput) => {
+  const handleRegister = async (data: RegisterFormInput) => {
     setLoading(true);
     setError(null);
 
-    const result = await supabase.auth.signInWithPassword({
+    console.log(data);
+
+    const result = await supabase.auth.signUp({
       email: data.email,
       password: data.password,
+      options: {
+        data: {
+          first_name: data.first_name,
+          last_name: data.last_name,
+        }
+      }
     });
 
     if (result.error) {
@@ -37,10 +46,10 @@ export const LoginPage: React.FC = () => {
 
   return (
     <AuthLayout>
-      <Heading fontSize={'2xl'}>{texts.auth.signInToYourAccount}</Heading>
-      <LoginForm loading={loading} error={error} onSubmit={handleLogin} />
+      <Heading fontSize={'2xl'}>{texts.auth.signUpToYourAccount}</Heading>
+      <RegisterForm loading={loading} error={error} onSubmit={handleRegister} />
       <Text fontSize={'sm'} color={'gray.600'}>
-        {texts.auth.doYouNeedAnAccount} <Link to="/register" chakraProps={{ color: 'blue.400', fontWeight: 'bold' }}>{texts.auth.signUp}</Link>
+        {texts.auth.doYouAlreadyHaveAnAccount} <Link to="/login" chakraProps={{ color: 'blue.400', fontWeight: 'bold' }}>{texts.auth.signIn}</Link>
       </Text>
     </AuthLayout>
   )

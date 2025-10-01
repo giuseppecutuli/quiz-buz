@@ -3,7 +3,16 @@ import { Controller, FieldError, useFormContext } from 'react-hook-form'
 
 import { Checkbox } from '../ui/checkbox'
 import { Field } from '../ui/field'
-import { FormFieldProps } from './types'
+
+export type FormFieldProps = {
+  type: string;
+  placeholder?: string;
+  label?: string;
+  name: string;
+  disabled?: boolean;
+  required?: boolean;
+  valueAsNumber?: boolean;
+}
 
 export const FormField: React.FC<FormFieldProps> = ({
   type,

@@ -1,23 +1,41 @@
 import { Flex, Text } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FormProvider, useForm } from 'react-hook-form'
+import { z } from 'zod/v4'
 
 import { texts } from '@/lib/texts'
 
 import { FormField } from '../FormField'
 import { Button } from '../ui/button'
-import { LoginFormProps, LoginSchema } from './types'
+import { ForgotPassword } from '../ForgotPassword'
 
-export const LoginForm = ({ onSubmit, error, loading }: LoginFormProps) => {
+export type LoginFormProps = {
+  onSubmit: (data: LoginFormInput) => void;
+  onForgotPassword?: (email?: string) => void;
+  loading?: boolean;
+  error?: string | null;
+}
+
+export type LoginFormInput = {
+  email: string;
+  password: string;
+}
+
+export const LoginSchema = z
+  .object({
+    email: z.email(),
+    password: z.string().min(8).max(20),
+  })
+
+export const LoginForm = ({ onSubmit, error, loading, onForgotPassword }: LoginFormProps) => {
   const methods = useForm({
     defaultValues: {
       email: '',
       password: '',
-      remember: false
     },
     resolver: zodResolver(LoginSchema)
   })
-  const { handleSubmit } = methods
+  const { handleSubmit, getValues } = methods
 
   return (
     <FormProvider {...methods}>
@@ -39,16 +57,12 @@ export const LoginForm = ({ onSubmit, error, loading }: LoginFormProps) => {
             label={texts.form.password}
             required
           />
-
-          <FormField
-            type="checkbox"
-            name="remember"
-            label={texts.form.rememberMe}
-          />
         </Flex>
 
+        <ForgotPassword email={getValues('email')} />
+
         <Button type="submit" size="xl" colorPalette="blue" loading={loading} disabled={loading} width="full">
-          {texts.form.login.submit}
+          {texts.form.login}
         </Button>
 
         {error && <Text color="red.500" mt="3" textAlign="center">{error}</Text>}
