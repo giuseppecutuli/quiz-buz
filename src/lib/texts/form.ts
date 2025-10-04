@@ -12,4 +12,5 @@ export const form = {
   lastName: 'Last Name',
   enterFirstName: 'Enter your first name',
   enterLastName: 'Enter your last name',
+  submit: 'Submit',
 }

@@ -7,4 +7,6 @@ export const auth = {
   signInToYourAccount: 'Sign in to your account',
   signUpToYourAccount: 'Sign up to your account',
   forgotPassword: 'Forgot your password?',
+  receiveForgotPasswordEmail: 'You will receive an email with instructions on how to reset your password.',
+  forgotPasswordEmailSent: 'If an account with that email exists, you will receive an email with instructions to reset your password.',
 }

@@ -1,4 +1,7 @@
 import { texts } from "@/lib/texts"
+import { zodResolver } from '@hookform/resolvers/zod'
+import { FormProvider, useForm } from 'react-hook-form'
+import { z } from 'zod/v4'
 import {
   Button,
   CloseButton,
@@ -6,20 +9,47 @@ import {
   Heading,
   Text,
   Portal,
+  Flex,
+  useDialog
 } from "@chakra-ui/react"
+import { FormField } from "../FormField"
+import { useForgotPassword } from "./useForgotPassword.hook"
+import { useEffect } from "react"
 
-type ForgotPasswordProps = {
-  email?: string;
-}
+type ForgotPasswordProps = {}
 
-export const ForgotPassword: React.FC<ForgotPasswordProps> = ({ email }) => {
+const ForgotPasswordSchema = z
+  .object({
+    email: z.email(),
+  })
+
+export const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
+  const dialog = useDialog()
+  const methods = useForm({
+      defaultValues: {
+        email: '',
+      },
+      resolver: zodResolver(ForgotPasswordSchema)
+    })
+  const { handleSubmit, reset } = methods
+
+  const { loading, success, handleForgotPassword, error, resetStatuses } = useForgotPassword()
+
+  useEffect(() => {
+    if (!dialog.open) {
+      reset()
+      resetStatuses()
+    }
+  }, [dialog.open])
+
   return (
-    <Dialog.Root>
+    <Dialog.RootProvider value={dialog}>
       <Dialog.Trigger asChild>
         <Button
           variant="plain"
+          color={"blue.500"}
           size="sm"
-          mb="5"
+          my="3"
           float="right"
         >
           {texts.auth.forgotPassword}
@@ -38,8 +68,39 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = ({ email }) => {
                 color={'gray.400'}
                 mt={4}
               >
-                You&apos;ll get an email with a reset link
+                {texts.auth.receiveForgotPasswordEmail}
               </Text>
+              {!success && (
+                <FormProvider {...methods}>
+                  <form onSubmit={handleSubmit(handleForgotPassword)}>
+                    <Flex gap="5" direction="column" mb="5" mt="5">
+                      <FormField
+                        type="email"
+                        name="email"
+                        placeholder={texts.form.enterEmail}
+                        label={texts.form.email}
+                        required
+                      />
+
+                      <Button type="submit" size="xl" colorPalette="blue" loading={loading} disabled={loading} width="full">
+                        {texts.form.submit}
+                      </Button>
+
+                      {error && <Text color="red.500" mt="3" textAlign="center">{error}</Text>}
+                    </Flex>
+                  </form>
+                </FormProvider>
+              )}
+              {success && (
+                <Text
+                  fontSize={{ base: 'sm', sm: 'md' }}
+                  fontWeight={'semibold'}
+                  color={'green.400'}
+                  mt={4}
+                >
+                  {texts.auth.forgotPasswordEmailSent}
+                </Text>
+              )}
             </Dialog.Body>
             <Dialog.CloseTrigger asChild>
               <CloseButton size="sm" />
@@ -47,6 +108,6 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = ({ email }) => {
           </Dialog.Content>
         </Dialog.Positioner>
       </Portal>
-    </Dialog.Root>
+    </Dialog.RootProvider>
   )
 }

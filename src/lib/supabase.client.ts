@@ -1,3 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
 
-export const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY)
+import { env } from './env'
+
+export const supabase = createClient(env.supabase.url, env.supabase.key)

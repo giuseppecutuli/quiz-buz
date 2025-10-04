@@ -2,43 +2,18 @@
 
 import { AuthLayout } from '@/components/AuthLayout';
 import { Link } from '@/components/Link';
-import { LoginForm, LoginFormInput } from '@/components/LoginForm'
-import { supabase } from '@/lib/supabase.client';
+import { LoginForm } from '@/components/LoginForm'
 import { texts } from '@/lib/texts';
 import {
   Heading,
   Text,
 } from '@chakra-ui/react'
-import { useNavigate } from '@tanstack/react-router';
-import { useState } from 'react';
 
 export const LoginPage: React.FC = () => {
-  const navigate = useNavigate()
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const handleLogin = async (data: LoginFormInput) => {
-    setLoading(true);
-    setError(null);
-
-    const result = await supabase.auth.signInWithPassword({
-      email: data.email,
-      password: data.password,
-    });
-
-    if (result.error) {
-      setError(result.error.message);
-    } else {
-      navigate({ to: '/' })
-    }
-
-    setLoading(false);
-  };
-
   return (
     <AuthLayout>
       <Heading fontSize={'2xl'}>{texts.auth.signInToYourAccount}</Heading>
-      <LoginForm loading={loading} error={error} onSubmit={handleLogin} />
+      <LoginForm />
       <Text fontSize={'sm'} color={'gray.600'}>
         {texts.auth.doYouNeedAnAccount} <Link to="/register" chakraProps={{ color: 'blue.400', fontWeight: 'bold' }}>{texts.auth.signUp}</Link>
       </Text>

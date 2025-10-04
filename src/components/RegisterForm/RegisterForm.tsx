@@ -7,20 +7,9 @@ import { texts } from '@/lib/texts'
 
 import { FormField } from '../FormField'
 import { Button } from '../ui/button'
+import { useRegister } from './useRegister.hook'
 
-export type RegisterFormProps = {
-  onSubmit: (data: RegisterFormInput) => void;
-  loading?: boolean;
-  error?: string | null;
-}
-
-export type RegisterFormInput = {
-  first_name: string;
-  last_name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
+export type RegisterFormProps = {}
 
 export const RegisterSchema = z
   .object({
@@ -35,7 +24,7 @@ export const RegisterSchema = z
     path: ['confirmPassword'],
   })
 
-export const RegisterForm = ({ onSubmit, error, loading }: RegisterFormProps) => {
+export const RegisterForm: React.FC<RegisterFormProps> = () => {
   const methods = useForm({
     defaultValues: {
       first_name: '',
@@ -47,10 +36,11 @@ export const RegisterForm = ({ onSubmit, error, loading }: RegisterFormProps) =>
     resolver: zodResolver(RegisterSchema)
   })
   const { handleSubmit } = methods
+  const { handleRegister, loading, error } = useRegister()
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(handleRegister)}>
         <Flex gap="5" direction="column" mb="5">
           <FormField
             type="text"

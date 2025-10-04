@@ -8,18 +8,9 @@ import { texts } from '@/lib/texts'
 import { FormField } from '../FormField'
 import { Button } from '../ui/button'
 import { ForgotPassword } from '../ForgotPassword'
+import { useLogin } from './useLogin.hook'
 
-export type LoginFormProps = {
-  onSubmit: (data: LoginFormInput) => void;
-  onForgotPassword?: (email?: string) => void;
-  loading?: boolean;
-  error?: string | null;
-}
-
-export type LoginFormInput = {
-  email: string;
-  password: string;
-}
+export type LoginFormProps = {}
 
 export const LoginSchema = z
   .object({
@@ -27,7 +18,7 @@ export const LoginSchema = z
     password: z.string().min(8).max(20),
   })
 
-export const LoginForm = ({ onSubmit, error, loading, onForgotPassword }: LoginFormProps) => {
+export const LoginForm: React.FC<LoginFormProps> = () => {
   const methods = useForm({
     defaultValues: {
       email: '',
@@ -35,19 +26,20 @@ export const LoginForm = ({ onSubmit, error, loading, onForgotPassword }: LoginF
     },
     resolver: zodResolver(LoginSchema)
   })
-  const { handleSubmit, getValues } = methods
+  const { handleSubmit } = methods
+
+  const { handleLogin, loading, error } = useLogin()
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Flex gap="5" direction="column" mb="5">
+      <form onSubmit={handleSubmit(handleLogin)}>
+        <Flex gap="5" direction="column">
           <FormField
             type="email"
             name="email"
             placeholder={texts.form.enterEmail}
             label={texts.form.email}
             required
-
           />
 
           <FormField
@@ -59,7 +51,7 @@ export const LoginForm = ({ onSubmit, error, loading, onForgotPassword }: LoginF
           />
         </Flex>
 
-        <ForgotPassword email={getValues('email')} />
+        <ForgotPassword />
 
         <Button type="submit" size="xl" colorPalette="blue" loading={loading} disabled={loading} width="full">
           {texts.form.login}
