@@ -13,4 +13,5 @@ export const form = {
   enterFirstName: 'Enter your first name',
   enterLastName: 'Enter your last name',
   submit: 'Submit',
+  updatePassword: 'Update Password',
 }

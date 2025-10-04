@@ -47,7 +47,7 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
       <Dialog.Trigger asChild>
         <Button
           variant="plain"
-          color={"blue.500"}
+          color={"blue.400"}
           size="sm"
           my="3"
           float="right"
@@ -72,7 +72,16 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
               </Text>
               {!success && (
                 <FormProvider {...methods}>
-                  <form onSubmit={handleSubmit(handleForgotPassword)}>
+                  <form onSubmit={(event) => {
+                    /**
+                     * This is needed to avoid propagation of the event to
+                     * the other forms that could be present in the page
+                     * (e.g. LoginForm)
+                     */
+                    event.stopPropagation()
+
+                    handleSubmit(handleForgotPassword)(event)
+                  }}>
                     <Flex gap="5" direction="column" mb="5" mt="5">
                       <FormField
                         type="email"

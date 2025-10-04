@@ -8,6 +8,7 @@ import { AuthProvider, useAuth } from './contexts/Auth'
 // Import the generated route tree
 import { waitForAuth } from './lib/auth'
 import { router } from './lib/router'
+import { Toaster } from '@/components/ui/toaster'
 
 
 // Register the router instance for type safety
@@ -37,6 +38,7 @@ if (!rootElement.innerHTML) {
       <UiProvider>
         <AuthProvider>
           <Router />
+          <Toaster />
         </AuthProvider>
       </UiProvider>
     </StrictMode>,

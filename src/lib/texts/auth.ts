@@ -9,4 +9,6 @@ export const auth = {
   forgotPassword: 'Forgot your password?',
   receiveForgotPasswordEmail: 'You will receive an email with instructions on how to reset your password.',
   forgotPasswordEmailSent: 'If an account with that email exists, you will receive an email with instructions to reset your password.',
+  resetPassword: 'Reset Password',
+  updatePasswordSuccess: 'Your password has been updated successfully.',
 }

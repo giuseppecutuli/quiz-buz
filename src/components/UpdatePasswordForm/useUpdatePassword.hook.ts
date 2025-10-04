@@ -2,38 +2,34 @@ import { useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 
 import { supabase } from '@/lib/supabase.client'
+import { texts } from '@/lib/texts'
 
-export type RegisterFormInput = {
-  first_name: string;
-  last_name: string;
-  email: string;
+import { toaster } from '../ui/toaster'
+
+export type UpdatePasswordInput = {
   password: string;
   confirmPassword: string;
 }
 
-export const useRegister = () => {
+export const useUpdatePassword = () => {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const handleRegister = async (data: RegisterFormInput) => {
+  const handleUpdatePassword = async (data: UpdatePasswordInput) => {
     setLoading(true)
     setError(null)
 
-    const result = await supabase.auth.signUp({
-      email: data.email,
+    const result = await supabase.auth.updateUser({
       password: data.password,
-      options: {
-        data: {
-          first_name: data.first_name,
-          last_name: data.last_name,
-        }
-      }
     })
 
     if (result.error) {
       setError(result.error.message)
     } else {
+      toaster.success({
+        title: texts.auth.updatePasswordSuccess,
+      })
       navigate({ to: '/' })
     }
 
@@ -43,6 +39,6 @@ export const useRegister = () => {
   return {
     loading,
     error,
-    handleRegister,
+    handleUpdatePassword,
   }
 }
