@@ -10,4 +10,5 @@ export const auth = {
   forgotPasswordEmailSent: 'If an account with that email exists, you will receive an email with instructions to reset your password.',
   resetPassword: 'Reset Password',
   updatePasswordSuccess: 'Your password has been updated successfully.',
+  logout: 'Logout',
 }

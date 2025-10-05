@@ -1,10 +1,13 @@
-import { createFileRoute, Outlet, redirect, useRouter } from '@tanstack/react-router'
+import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 
-import { Button } from '@/components/ui/button'
-import { supabase } from '@/lib/supabase.client'
+import { Layout } from '@/components/Layout'
 
 export const Route = createFileRoute('/__auth')({
-  component: AuthLayout,
+  component: () => (
+    <Layout>
+      <Outlet />
+    </Layout>
+  ),
   beforeLoad: async ({ context }) => {
     const { user } = await context.waitForAuth()
 
@@ -13,22 +16,3 @@ export const Route = createFileRoute('/__auth')({
     }
   },
 })
-
-function AuthLayout() {
-  const router = useRouter()
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut()
-    router.navigate({ to: '/login' })
-  }
-
-  return (
-    <div className="p-2 h-full">
-      <h1>Authenticated Route</h1>
-      <p>This route's content is only visible to authenticated users.</p>
-      <hr />
-      <Button onClick={handleLogout}>Logout</Button>
-      <Outlet />
-    </div>
-  )
-}
