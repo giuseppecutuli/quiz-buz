@@ -1,43 +1,48 @@
-import js from '@eslint/js'
-import globals from 'globals'
+import eslint from '@eslint/js'
+import stylistic from '@stylistic/eslint-plugin'
+import { defineConfig } from 'eslint/config'
+import eslintConfigPrettier from 'eslint-config-prettier/flat'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
-import tseslint from 'typescript-eslint'
-import prettier from 'eslint-config-prettier'
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
+import tseslint from 'typescript-eslint'
 
-export default tseslint.config(
-  { ignores: ['dist'] },
+export default defineConfig([
+  eslint.configs.recommended,
+  tseslint.configs.recommended,
+  eslintConfigPrettier,
   {
-    extends: [
-      prettier,
-      js.configs.recommended,
-      ...tseslint.configs.recommended
-    ],
-    files: ['**/*.{ts,tsx}'],
-    languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
-    },
     plugins: {
-      'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
+      '@stylistic': stylistic,
+    },
+    rules: {
+      '@stylistic/semi': ['error', 'never'],
+      '@stylistic/quotes': ['error', 'single'],
+      '@stylistic/indent': ['error', 2],
+    },
+  },
+  reactHooks.configs['recommended-latest'],
+  reactRefresh.configs.recommended,
+  {
+    plugins: {
       'simple-import-sort': simpleImportSort,
     },
     rules: {
-      ...reactHooks.configs.recommended.rules,
+      'simple-import-sort/imports': 'error',
+      'simple-import-sort/exports': 'error',
+    },
+  },
+  {
+    files: ['src/**/*.{js,jsx,ts,tsx}'],
+    rules: {
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },
       ],
-      semi: ['error', 'never'],
       'object-curly-spacing': ['error', 'always'],
-      quotes: ['error', 'single'],
       'no-multiple-empty-lines': 'error',
       'no-multi-spaces': 'error',
-      'simple-import-sort/imports': 'error',
-      'simple-import-sort/exports': 'error',
-      indent: ['error', 2, { SwitchCase: 1, offsetTernaryExpressions: true }],
+      '@typescript-eslint/no-empty-object-type': 'off',
     },
   },
-)
+])

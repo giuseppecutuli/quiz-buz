@@ -34,4 +34,3 @@ export const useAuthLifecycle = () => {
     return () => subscription.unsubscribe()
   }, [])
 }
-

@@ -5,9 +5,9 @@ import { z } from 'zod/v4'
 
 import { texts } from '@/lib/texts'
 
+import { ForgotPassword } from '../ForgotPassword'
 import { FormField } from '../FormField'
 import { Button } from '../ui/button'
-import { ForgotPassword } from '../ForgotPassword'
 import { useLogin } from './useLogin.hook'
 
 export type LoginFormProps = {}
@@ -24,7 +24,7 @@ export const LoginForm: React.FC<LoginFormProps> = () => {
       email: '',
       password: '',
     },
-    resolver: zodResolver(LoginSchema)
+    resolver: zodResolver(LoginSchema),
   })
   const { handleSubmit } = methods
 

@@ -8,7 +8,7 @@ import { waitForAuth } from './auth'
 
 export type RouterContext = {
   auth: AuthContextType
-  waitForAuth: () => Promise<{ user: User | null }>;
+  waitForAuth: () => Promise<{ user: User | null }>
 }
 
 export const router = createRouter({
@@ -16,5 +16,5 @@ export const router = createRouter({
   context: {
     auth: undefined!,
     waitForAuth,
-  }
+  },
 })

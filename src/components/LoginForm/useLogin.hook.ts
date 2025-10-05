@@ -4,8 +4,8 @@ import { useState } from 'react'
 import { supabase } from '@/lib/supabase.client'
 
 export type LoginFormInput = {
-  email: string;
-  password: string;
+  email: string
+  password: string
 }
 
 export const useLogin = () => {
@@ -24,7 +24,8 @@ export const useLogin = () => {
 
     if (result.error) {
       setError(result.error.message)
-    } else {
+    }
+    else {
       navigate({ to: '/' })
     }
 

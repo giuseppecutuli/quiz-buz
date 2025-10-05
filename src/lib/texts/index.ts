@@ -5,4 +5,3 @@ export const texts = {
   ...form,
   ...auth,
 }
-

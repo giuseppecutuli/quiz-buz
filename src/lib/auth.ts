@@ -16,7 +16,7 @@ export const waitForAuth = (): Promise<{ user: User | null }> => {
           resolve({ user: state.user })
           unsubscribe()
         }
-      }
+      },
     )
   })
 }

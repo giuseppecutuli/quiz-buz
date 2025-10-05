@@ -4,7 +4,7 @@ import { env } from '@/lib/env'
 import { supabase } from '@/lib/supabase.client'
 
 export type ForgotPasswordInput = {
-  email: string;
+  email: string
 }
 
 export const useForgotPassword = () => {
@@ -18,12 +18,13 @@ export const useForgotPassword = () => {
     setError(null)
 
     const result = await supabase.auth.resetPasswordForEmail(data.email, {
-      redirectTo: `${env.baseUrl}/reset-password`
+      redirectTo: `${env.baseUrl}/reset-password`,
     })
 
     if (result.error) {
       setError(result.error.message)
-    } else {
+    }
+    else {
       setSuccess(true)
     }
 

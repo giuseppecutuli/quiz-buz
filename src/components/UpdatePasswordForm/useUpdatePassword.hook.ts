@@ -7,8 +7,8 @@ import { texts } from '@/lib/texts'
 import { toaster } from '../ui/toaster'
 
 export type UpdatePasswordInput = {
-  password: string;
-  confirmPassword: string;
+  password: string
+  confirmPassword: string
 }
 
 export const useUpdatePassword = () => {
@@ -26,7 +26,8 @@ export const useUpdatePassword = () => {
 
     if (result.error) {
       setError(result.error.message)
-    } else {
+    }
+    else {
       toaster.success({
         title: texts.auth.updatePasswordSuccess,
       })

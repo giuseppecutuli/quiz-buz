@@ -5,13 +5,13 @@ import { Checkbox } from '../ui/checkbox'
 import { Field } from '../ui/field'
 
 export type FormFieldProps = {
-  type: string;
-  placeholder?: string;
-  label?: string;
-  name: string;
-  disabled?: boolean;
-  required?: boolean;
-  valueAsNumber?: boolean;
+  type: string
+  placeholder?: string
+  label?: string
+  name: string
+  disabled?: boolean
+  required?: boolean
+  valueAsNumber?: boolean
 }
 
 export const FormField: React.FC<FormFieldProps> = ({
@@ -48,7 +48,6 @@ export const FormField: React.FC<FormFieldProps> = ({
         )}
       />
     )
-
   }
 
   return (

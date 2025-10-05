@@ -1,7 +1,8 @@
 import { PropsWithChildren } from 'react'
 
-import { AuthContext, AuthContextType } from './auth.context'
 import { useAuthLifecycle, useAuthStore } from '@/hooks'
+
+import { AuthContext, AuthContextType } from './auth.context'
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   useAuthLifecycle()

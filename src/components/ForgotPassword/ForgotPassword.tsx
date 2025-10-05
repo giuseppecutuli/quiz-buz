@@ -1,20 +1,22 @@
-import { texts } from "@/lib/texts"
-import { zodResolver } from '@hookform/resolvers/zod'
-import { FormProvider, useForm } from 'react-hook-form'
-import { z } from 'zod/v4'
 import {
   Button,
   CloseButton,
   Dialog,
-  Heading,
-  Text,
-  Portal,
   Flex,
-  useDialog
-} from "@chakra-ui/react"
-import { FormField } from "../FormField"
-import { useForgotPassword } from "./useForgotPassword.hook"
-import { useEffect } from "react"
+  Heading,
+  Portal,
+  Text,
+  useDialog,
+} from '@chakra-ui/react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useEffect } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
+import { z } from 'zod/v4'
+
+import { texts } from '@/lib/texts'
+
+import { FormField } from '../FormField'
+import { useForgotPassword } from './useForgotPassword.hook'
 
 type ForgotPasswordProps = {}
 
@@ -26,11 +28,11 @@ const ForgotPasswordSchema = z
 export const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
   const dialog = useDialog()
   const methods = useForm({
-      defaultValues: {
-        email: '',
-      },
-      resolver: zodResolver(ForgotPasswordSchema)
-    })
+    defaultValues: {
+      email: '',
+    },
+    resolver: zodResolver(ForgotPasswordSchema),
+  })
   const { handleSubmit, reset } = methods
 
   const { loading, success, handleForgotPassword, error, resetStatuses } = useForgotPassword()
@@ -47,7 +49,7 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
       <Dialog.Trigger asChild>
         <Button
           variant="plain"
-          color={"blue.400"}
+          color="blue.400"
           size="sm"
           my="3"
           float="right"
@@ -65,7 +67,7 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
               </Heading>
               <Text
                 fontSize={{ base: 'sm', sm: 'md' }}
-                color={'gray.400'}
+                color="gray.400"
                 mt={4}
               >
                 {texts.auth.receiveForgotPasswordEmail}
@@ -81,7 +83,8 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
                     event.stopPropagation()
 
                     handleSubmit(handleForgotPassword)(event)
-                  }}>
+                  }}
+                  >
                     <Flex gap="5" direction="column" mb="5" mt="5">
                       <FormField
                         type="email"
@@ -103,8 +106,8 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
               {success && (
                 <Text
                   fontSize={{ base: 'sm', sm: 'md' }}
-                  fontWeight={'semibold'}
-                  color={'green.400'}
+                  fontWeight="semibold"
+                  color="green.400"
                   mt={4}
                 >
                   {texts.auth.forgotPasswordEmailSent}

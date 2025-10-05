@@ -1,4 +1,3 @@
-
 export const auth = {
   signIn: 'Sign In',
   signUp: 'Sign Up',

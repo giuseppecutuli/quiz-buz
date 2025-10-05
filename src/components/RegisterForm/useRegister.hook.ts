@@ -4,11 +4,11 @@ import { useState } from 'react'
 import { supabase } from '@/lib/supabase.client'
 
 export type RegisterFormInput = {
-  first_name: string;
-  last_name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
+  first_name: string
+  last_name: string
+  email: string
+  password: string
+  confirmPassword: string
 }
 
 export const useRegister = () => {
@@ -27,13 +27,14 @@ export const useRegister = () => {
         data: {
           first_name: data.first_name,
           last_name: data.last_name,
-        }
-      }
+        },
+      },
     })
 
     if (result.error) {
       setError(result.error.message)
-    } else {
+    }
+    else {
       navigate({ to: '/' })
     }
 

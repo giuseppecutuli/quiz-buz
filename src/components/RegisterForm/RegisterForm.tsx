@@ -19,7 +19,7 @@ export const RegisterSchema = z
     password: z.string().min(8).max(20),
     confirmPassword: z.string().min(8).max(20),
   })
-  .refine((data) => data.password === data.confirmPassword, {
+  .refine(data => data.password === data.confirmPassword, {
     message: texts.form.passwordNotMatch,
     path: ['confirmPassword'],
   })
@@ -33,7 +33,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = () => {
       password: '',
       confirmPassword: '',
     },
-    resolver: zodResolver(RegisterSchema)
+    resolver: zodResolver(RegisterSchema),
   })
   const { handleSubmit } = methods
   const { handleRegister, loading, error } = useRegister()

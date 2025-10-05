@@ -1,6 +1,7 @@
+import { createFileRoute, Outlet, redirect, useRouter } from '@tanstack/react-router'
+
 import { Button } from '@/components/ui/button'
 import { supabase } from '@/lib/supabase.client'
-import { createFileRoute, Outlet, redirect, useRouter } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/__auth')({
   component: AuthLayout,

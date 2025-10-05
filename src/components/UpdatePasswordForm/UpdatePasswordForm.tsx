@@ -1,17 +1,19 @@
-import { texts } from "@/lib/texts"
-import { Flex, Button, Text } from "@chakra-ui/react"
-import { FormProvider, useForm } from "react-hook-form"
-import { FormField } from "../FormField"
-import { z } from "zod/v4"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useUpdatePassword } from "./useUpdatePassword.hook"
+import { Button, Flex, Text } from '@chakra-ui/react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { FormProvider, useForm } from 'react-hook-form'
+import { z } from 'zod/v4'
+
+import { texts } from '@/lib/texts'
+
+import { FormField } from '../FormField'
+import { useUpdatePassword } from './useUpdatePassword.hook'
 
 export const UpdatePasswordSchema = z
   .object({
     password: z.string().min(8).max(20),
     confirmPassword: z.string().min(8).max(20),
   })
-  .refine((data) => data.password === data.confirmPassword, {
+  .refine(data => data.password === data.confirmPassword, {
     message: texts.form.passwordNotMatch,
     path: ['confirmPassword'],
   })
@@ -22,7 +24,7 @@ export const UpdatePasswordForm: React.FC = () => {
       password: '',
       confirmPassword: '',
     },
-    resolver: zodResolver(UpdatePasswordSchema)
+    resolver: zodResolver(UpdatePasswordSchema),
   })
   const { handleSubmit } = methods
 
