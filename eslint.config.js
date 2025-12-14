@@ -9,7 +9,7 @@ import tseslint from 'typescript-eslint'
 
 export default defineConfig([
   eslint.configs.recommended,
-  tseslint.configs.recommended,
+  ...tseslint.configs.recommended,
   eslintConfigPrettier,
   {
     plugins: {
@@ -21,8 +21,19 @@ export default defineConfig([
       '@stylistic/indent': ['error', 2],
     },
   },
-  reactHooks.configs['recommended-latest'],
-  reactRefresh.configs.recommended,
+  {
+    plugins: {
+      'react-hooks': reactHooks,
+      'react-refresh': reactRefresh,
+    },
+    rules: {
+      ...reactHooks.configs.recommended.rules,
+      'react-refresh/only-export-components': [
+        'warn',
+        { allowConstantExport: true },
+      ],
+    },
+  },
   {
     plugins: {
       'simple-import-sort': simpleImportSort,
@@ -35,10 +46,6 @@ export default defineConfig([
   {
     files: ['src/**/*.{js,jsx,ts,tsx}'],
     rules: {
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
       'object-curly-spacing': ['error', 'always'],
       'no-multiple-empty-lines': 'error',
       'no-multi-spaces': 'error',
