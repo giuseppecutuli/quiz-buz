@@ -1,6 +1,6 @@
 import { Badge, Box, Card, HStack } from '@chakra-ui/react'
 
-type QuizCardProps = {
+export type QuizCardProps = {
   imageUrl: string
   title: string
   tags?: string[]
@@ -10,9 +10,12 @@ type QuizCardProps = {
 export const QuizCard: React.FC<QuizCardProps> = ({ imageUrl, title, tags, onClick }) => {
   return (
     <Card.Root
-      h={350}
+      h={{
+        base: 400,
+        md: 350,
+      }}
       overflow="hidden"
-      maxW="xl"
+      maxW="2xl"
       bgPos="center"
       bgSize="cover"
       bgImage={'url(' + imageUrl + ')'}
