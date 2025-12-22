@@ -27,9 +27,6 @@ export const Navbar: React.FC<Props> = ({ onOpen }) => {
       px={{ base: 4, md: 4 }}
       height="20"
       alignItems="center"
-      bg="white"
-      borderBottomWidth="1px"
-      borderBottomColor="gray.200"
       justifyContent={{ base: 'space-between', md: 'flex-end' }}
     >
       <IconButton

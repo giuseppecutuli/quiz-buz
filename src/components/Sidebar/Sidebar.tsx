@@ -18,10 +18,6 @@ type Props = BoxProps & {
 export const Sidebar: React.FC<Props> = ({ onClose, ...props }) => {
   return (
     <Box
-      transition="3s ease"
-      bg="white"
-      borderRightWidth="1px"
-      borderRightColor="gray.200"
       w={{ base: 'full', md: 60 }}
       pos="fixed"
       h="full"
