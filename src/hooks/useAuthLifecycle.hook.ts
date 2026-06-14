@@ -1,39 +1,25 @@
-import { AuthChangeEvent, Session } from '@supabase/supabase-js'
+import type { User } from 'firebase/auth'
+import { onAuthStateChanged } from 'firebase/auth'
 import { useCallback, useEffect } from 'react'
 
-import { supabase } from '@/lib/supabase.client'
+import { auth } from '@/lib/firebase.client'
 
 import { useAuthStore } from './useAuthStore.hook'
 
 export const useAuthLifecycle = () => {
-  const { setInitialized, setSession, setUser } = useAuthStore()
+  const { setInitialized, setUser } = useAuthStore()
 
-  const onAuthStateChange = useCallback(
-    (event: AuthChangeEvent, session: Session | null) => {
-      console.log('Auth event:', event)
-      console.log('Session:', session)
-
-      setSession(session)
-      setUser(session?.user ?? null)
+  const handleUser = useCallback(
+    (user: User | null) => {
+      setUser(user)
+      setInitialized(true)
     },
-    [setSession, setUser],
+    [setUser, setInitialized],
   )
 
-  const initSession = useCallback(async () => {
-    const {
-      data: { session },
-    } = await supabase.auth.getSession()
-
-    setSession(session)
-    setUser(session?.user ?? null)
-    setInitialized(true)
-  }, [setSession, setUser, setInitialized])
-
   useEffect(() => {
-    initSession()
+    const unsubscribe = onAuthStateChanged(auth, handleUser)
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(onAuthStateChange)
-
-    return () => subscription.unsubscribe()
-  }, [initSession, onAuthStateChange])
+    return unsubscribe
+  }, [handleUser])
 }

@@ -1,7 +1,8 @@
+import { sendPasswordResetEmail } from 'firebase/auth'
 import { useCallback, useState } from 'react'
 
 import { env } from '@/lib/env'
-import { supabase } from '@/lib/supabase.client'
+import { auth } from '@/lib/firebase.client'
 
 export type ForgotPasswordInput = {
   email: string
@@ -17,18 +18,18 @@ export const useForgotPassword = () => {
     setSuccess(false)
     setError(null)
 
-    const result = await supabase.auth.resetPasswordForEmail(data.email, {
-      redirectTo: `${env.baseUrl}/reset-password`,
-    })
-
-    if (result.error) {
-      setError(result.error.message)
-    }
-    else {
+    try {
+      await sendPasswordResetEmail(auth, data.email, {
+        url: `${env.baseUrl}/reset-password`,
+      })
       setSuccess(true)
     }
-
-    setLoading(false)
+    catch (err) {
+      setError((err as Error).message)
+    }
+    finally {
+      setLoading(false)
+    }
   }
 
   const resetStatuses = useCallback(() => {
