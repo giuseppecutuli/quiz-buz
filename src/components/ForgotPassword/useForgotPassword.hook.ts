@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import { env } from '@/lib/env'
 import { supabase } from '@/lib/supabase.client'
@@ -31,11 +31,11 @@ export const useForgotPassword = () => {
     setLoading(false)
   }
 
-  const resetStatuses = () => {
+  const resetStatuses = useCallback(() => {
     setLoading(false)
     setError(null)
     setSuccess(false)
-  }
+  }, [])
 
   return {
     loading,
