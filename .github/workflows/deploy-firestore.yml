@@ -1,0 +1,26 @@
+name: Deploy Firestore
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'firebase/firestore.rules'
+      - 'firebase/firestore.indexes.json'
+      - 'firebase.json'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - run: npm install -g firebase-tools
+
+      - run: firebase deploy --only firestore --project quiz-buz-636e4
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
