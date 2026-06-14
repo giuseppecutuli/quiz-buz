@@ -1,0 +1,51 @@
+rules_version = '2'
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper: check if the user is authenticated
+    function isAuthenticated() {
+      return request.auth != null
+    }
+
+    // Helper: check if the user owns the document
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId
+    }
+
+    // Users collection
+    // Each user can read and write only their own profile
+    match /users/{userId} {
+      allow read, write: if isOwner(userId)
+    }
+
+    // Quizzes collection
+    // - Anyone authenticated can read quizzes
+    // - Only the creator can create/update/delete
+    match /quizzes/{quizId} {
+      allow read: if isAuthenticated()
+      allow create: if isAuthenticated() && request.resource.data.createdBy == request.auth.uid
+      allow update, delete: if isAuthenticated() && resource.data.createdBy == request.auth.uid
+
+      // Questions subcollection
+      // Same rules as parent quiz
+      match /questions/{questionId} {
+        allow read: if isAuthenticated()
+        allow create: if isAuthenticated() && get(/databases/$(database)/documents/quizzes/$(quizId)).data.createdBy == request.auth.uid
+        allow update, delete: if isAuthenticated() && get(/databases/$(database)/documents/quizzes/$(quizId)).data.createdBy == request.auth.uid
+      }
+    }
+
+    // User answers collection
+    // Each user can only read/write their own answers
+    match /user_answers/{answerId} {
+      allow read, write: if isAuthenticated() && request.resource.data.userId == request.auth.uid
+    }
+
+    // User scores collection
+    // Each user can read/write their own scores
+    match /user_scores/{scoreId} {
+      allow read, write: if isAuthenticated() && resource.data.userId == request.auth.uid
+    }
+  }
+}

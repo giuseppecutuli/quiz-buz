@@ -1,7 +1,8 @@
 import { useNavigate } from '@tanstack/react-router'
+import { updatePassword } from 'firebase/auth'
 import { useState } from 'react'
 
-import { supabase } from '@/lib/supabase.client'
+import { auth } from '@/lib/firebase.client'
 import { texts } from '@/lib/texts'
 
 import { toaster } from '../ui/toaster'
@@ -20,21 +21,26 @@ export const useUpdatePassword = () => {
     setLoading(true)
     setError(null)
 
-    const result = await supabase.auth.updateUser({
-      password: data.password,
-    })
+    try {
+      const user = auth.currentUser
 
-    if (result.error) {
-      setError(result.error.message)
-    }
-    else {
+      if (!user) {
+        throw new Error('No authenticated user')
+      }
+
+      await updatePassword(user, data.password)
+
       toaster.success({
         title: texts.auth.updatePasswordSuccess,
       })
       navigate({ to: '/' })
     }
-
-    setLoading(false)
+    catch (err) {
+      setError((err as Error).message)
+    }
+    finally {
+      setLoading(false)
+    }
   }
 
   return {

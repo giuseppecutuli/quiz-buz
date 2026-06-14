@@ -1,7 +1,8 @@
 import { useNavigate } from '@tanstack/react-router'
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import { useState } from 'react'
 
-import { supabase } from '@/lib/supabase.client'
+import { auth } from '@/lib/firebase.client'
 
 export type RegisterFormInput = {
   first_name: string
@@ -20,25 +21,21 @@ export const useRegister = () => {
     setLoading(true)
     setError(null)
 
-    const result = await supabase.auth.signUp({
-      email: data.email,
-      password: data.password,
-      options: {
-        data: {
-          first_name: data.first_name,
-          last_name: data.last_name,
-        },
-      },
-    })
+    try {
+      const { user } = await createUserWithEmailAndPassword(auth, data.email, data.password)
 
-    if (result.error) {
-      setError(result.error.message)
-    }
-    else {
+      await updateProfile(user, {
+        displayName: `${data.first_name} ${data.last_name}`,
+      })
+
       navigate({ to: '/' })
     }
-
-    setLoading(false)
+    catch (err) {
+      setError((err as Error).message)
+    }
+    finally {
+      setLoading(false)
+    }
   }
 
   return {

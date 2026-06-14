@@ -1,5 +1,5 @@
-import { User } from '@supabase/supabase-js'
 import { createRouter } from '@tanstack/react-router'
+import type { User } from 'firebase/auth'
 
 import { AuthContextType } from '@/contexts/Auth'
 import { routeTree } from '@/routeTree.gen'

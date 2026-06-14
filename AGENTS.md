@@ -1,0 +1,153 @@
+# Quiz Buz — Project Context
+
+## Tech Stack
+- **React 19** with TypeScript (strict mode)
+- **Vite 7** bundler + dev server
+- **Chakra UI v3** for styling/theming
+- **Firebase** (Auth + Firestore) for backend
+- **TanStack Router v1** (file-based routing)
+- **Zustand v5** for state management
+- **React Hook Form v7** + **Zod v4** for forms
+- **Zustand** selectors for auth state
+- **Vitest v4** for testing
+
+## Project Structure
+```
+/
+├─ firebase/
+│   ├─ firestore.rules
+│   └─ firestore.indexes.json
+├─ src/
+│   ├─ components/       # Reusable UI (one folder per component)
+│   │   ├─ AuthLayout/
+│   │   ├─ ForgotPassword/
+│   │   ├─ FormField/
+│   │   ├─ Layout/
+│   │   ├─ Link/
+│   │   ├─ LoginForm/
+│   │   ├─ Navbar/
+│   │   ├─ NavItem/
+│   │   ├─ QuizCard/
+│   │   ├─ QuizCarousel/
+│   │   ├─ RegisterForm/
+│   │   ├─ Sidebar/
+│   │   ├─ UpdatePasswordForm/
+│   │   ├─ User/
+│   │   └─ ui/            # Chakra UI auto-generated primitives
+│   ├─ contexts/
+│   │   └─ Auth/          # AuthContext + AuthProvider
+│   ├─ hooks/             # Custom hooks (one file per hook)
+│   ├─ lib/               # Firebase client, router, auth, env, texts
+│   ├─ pages/             # Page-level components (one folder per page)
+│   ├─ routes/            # TanStack Router route files
+│   └─ main.tsx           # Entry point
+├─ firebase.json
+└─ .firebaserc
+```
+
+## Code Conventions
+
+### General
+- No JSDoc comments unless the logic is non-obvious
+- No trailing semicolons (Prettier + ESLint enforce this)
+- Single quotes for strings
+- 2-space indentation
+- 140 char print width
+- Curly braces in object destructuring: `{ always }`
+
+### Imports
+- Sorted automatically by `simple-import-sort` (enforced as error)
+- Order: React → external packages → `@/` aliases → relative imports
+- Use `import type { X }` for type-only imports
+
+### Components
+- Each component folder has: `Component.tsx` + `index.ts` (re-export)
+- Use `React.FC<Props>` pattern for typing components
+- Props defined as `type Props = { ... }` (local) or exported
+- No `default export`, only named exports
+- Keep components small — extract logic into hooks and sub-components
+- A component should ideally fit in one screen; if it grows, split it
+
+### Hooks
+- One file per hook, suffixed with `.hook.ts`
+- Hooks that manage state use `useState`/`useCallback`
+- Auth state via Zustand store (`useAuthStore`)
+- Side effects in `useEffect` with proper dependency arrays
+- Extract non-trivial logic from components into custom hooks
+
+## Clean Code Rules
+- **Single Responsibility:** Each function, hook, and component does one thing
+- **No Magic Numbers/Strings:** Use named constants or the `texts` object
+- **Early Return:** Guard clauses over nested if-else
+- **Small Functions:** Extract helpers; a function should fit on one screen
+- **Descriptive Names:** `handleLogin` not `handleStuff`; `isLoading` not `loading`
+- **Avoid Duplication:** Extract repeated patterns into shared hooks/utils
+- **No Console.Log in Production:** Remove before committing
+
+## Commit Convention
+Follow [Conventional Commits](https://www.conventionalcommits.org/):
+
+```
+<type>(<scope>): <short description>
+
+<optional body>
+```
+
+### Types
+- `feat` — new feature
+- `fix` — bug fix
+- `chore` — maintenance (deps, config, tooling)
+- `refactor` — code change with no behavior change
+- `docs` — documentation only
+- `style` — formatting only (no logic change)
+- `test` — adding or fixing tests
+- `ci` — CI/CD changes
+
+### Scope (optional)
+Component, page, or area: `feat(auth):`, `fix(navbar):`, `chore(deps):`
+
+### Rules
+- Use the imperative mood ("add" not "added" / "adds")
+- First line max 72 chars
+- Body explains what and why, not how
+
+### Firebase
+- Auth client in `src/lib/firebase.client.ts` (exports `auth`)
+- Environment config in `src/lib/env.ts`
+- Firebase config in `.env` (not committed)
+- Auth store: Zustand with `initialized` + `user` fields
+- Auth lifecycle: `onAuthStateChanged` listener
+
+### Auth Flow
+- `useAuthLifecycle` initializes on app mount via `AuthProvider`
+- `waitForAuth` promise resolves when store is initialized
+- Routes use `beforeLoad` with `context.waitForAuth()` for protected routes
+- Login: `signInWithEmailAndPassword`
+- Register: `createUserWithEmailAndPassword` + `updateProfile`
+- Forgot password: `sendPasswordResetEmail`
+- Update password: `updatePassword`
+
+### Routing (TanStack Router)
+- Route files in `src/routes/` with `createFileRoute`
+- Route tree auto-generated in `routeTree.gen.ts`
+- Protected routes use `__auth` prefix layout
+- Route context typed via `RouterContext` in `router.ts`
+
+### Styling
+- Chakra UI v3 component API (`Card.Root`, `Dialog.Root`, etc.)
+- `asChild` pattern for composition
+- No CSS modules, Tailwind, or inline styles (except Chakra `css` prop)
+
+## Commands
+- `pnpm run dev` — start dev server
+- `pnpm run build` — type-check + bundle
+- `pnpm run lint` — ESLint (flat config)
+- `pnpm run test` — Vitest
+- `pnpm run deploy:firestore` — deploy Firestore rules + indexes
+- `pnpm run deploy` — full Firebase deploy
+
+## Important Notes
+- No `.npmrc` or `pnpm-workspace.yaml` in the repo
+- Build via `npx -p typescript -p vite tsc -b && npx vite build` if pnpm preinstall hooks fail
+- Main chunk ~704 kB (Firebase bundle size)
+- The `components/ui/` folder is auto-generated by Chakra CLI

@@ -1,7 +1,8 @@
 import { useNavigate } from '@tanstack/react-router'
+import { signInWithEmailAndPassword } from 'firebase/auth'
 import { useState } from 'react'
 
-import { supabase } from '@/lib/supabase.client'
+import { auth } from '@/lib/firebase.client'
 
 export type LoginFormInput = {
   email: string
@@ -17,19 +18,16 @@ export const useLogin = () => {
     setLoading(true)
     setError(null)
 
-    const result = await supabase.auth.signInWithPassword({
-      email: data.email,
-      password: data.password,
-    })
-
-    if (result.error) {
-      setError(result.error.message)
-    }
-    else {
+    try {
+      await signInWithEmailAndPassword(auth, data.email, data.password)
       navigate({ to: '/' })
     }
-
-    setLoading(false)
+    catch (err) {
+      setError((err as Error).message)
+    }
+    finally {
+      setLoading(false)
+    }
   }
 
   return {

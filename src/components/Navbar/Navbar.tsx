@@ -15,7 +15,7 @@ export const Navbar: React.FC<Props> = ({ onOpen }) => {
   const { user } = useAuth()
   const { handleLogout } = useLogout()
 
-  const fullName = user?.user_metadata.first_name + ' ' + user?.user_metadata.last_name
+  const fullName = user?.displayName || user?.email || 'User'
 
   const actions = [
     { label: texts.auth.logout, onClick: handleLogout },
