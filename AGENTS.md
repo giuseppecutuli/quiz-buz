@@ -65,12 +65,51 @@
 - Use `React.FC<Props>` pattern for typing components
 - Props defined as `type Props = { ... }` (local) or exported
 - No `default export`, only named exports
+- Keep components small — extract logic into hooks and sub-components
+- A component should ideally fit in one screen; if it grows, split it
 
 ### Hooks
 - One file per hook, suffixed with `.hook.ts`
 - Hooks that manage state use `useState`/`useCallback`
 - Auth state via Zustand store (`useAuthStore`)
 - Side effects in `useEffect` with proper dependency arrays
+- Extract non-trivial logic from components into custom hooks
+
+## Clean Code Rules
+- **Single Responsibility:** Each function, hook, and component does one thing
+- **No Magic Numbers/Strings:** Use named constants or the `texts` object
+- **Early Return:** Guard clauses over nested if-else
+- **Small Functions:** Extract helpers; a function should fit on one screen
+- **Descriptive Names:** `handleLogin` not `handleStuff`; `isLoading` not `loading`
+- **Avoid Duplication:** Extract repeated patterns into shared hooks/utils
+- **No Console.Log in Production:** Remove before committing
+
+## Commit Convention
+Follow [Conventional Commits](https://www.conventionalcommits.org/):
+
+```
+<type>(<scope>): <short description>
+
+<optional body>
+```
+
+### Types
+- `feat` — new feature
+- `fix` — bug fix
+- `chore` — maintenance (deps, config, tooling)
+- `refactor` — code change with no behavior change
+- `docs` — documentation only
+- `style` — formatting only (no logic change)
+- `test` — adding or fixing tests
+- `ci` — CI/CD changes
+
+### Scope (optional)
+Component, page, or area: `feat(auth):`, `fix(navbar):`, `chore(deps):`
+
+### Rules
+- Use the imperative mood ("add" not "added" / "adds")
+- First line max 72 chars
+- Body explains what and why, not how
 
 ### Firebase
 - Auth client in `src/lib/firebase.client.ts` (exports `auth`)
