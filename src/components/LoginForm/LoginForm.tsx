@@ -1,22 +1,16 @@
 import { Flex, Text } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FormProvider, useForm } from 'react-hook-form'
-import { z } from 'zod/v4'
 
 import { texts } from '@/lib/texts'
 
 import { ForgotPassword } from '../ForgotPassword'
 import { FormField } from '../FormField'
 import { Button } from '../ui/button'
+import { LoginSchema } from './login.schema'
 import { useLogin } from './useLogin.hook'
 
 export type LoginFormProps = {}
-
-export const LoginSchema = z
-  .object({
-    email: z.email(),
-    password: z.string().min(8).max(20),
-  })
 
 export const LoginForm: React.FC<LoginFormProps> = () => {
   const methods = useForm({

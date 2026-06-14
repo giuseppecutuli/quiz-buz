@@ -42,7 +42,7 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
       reset()
       resetStatuses()
     }
-  }, [dialog.open])
+  }, [dialog.open, reset, resetStatuses])
 
   return (
     <Dialog.RootProvider value={dialog}>

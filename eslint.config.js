@@ -8,6 +8,7 @@ import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import tseslint from 'typescript-eslint'
 
 export default defineConfig([
+  { ignores: ['dist/', 'node_modules/', '.git/'] },
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   eslintConfigPrettier,
@@ -41,6 +42,12 @@ export default defineConfig([
     rules: {
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
+    },
+  },
+  {
+    files: ['src/components/ui/**/*.{js,jsx,ts,tsx}', 'src/main.tsx'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
     },
   },
   {
